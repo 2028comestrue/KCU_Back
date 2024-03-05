@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Banner Images Display</title>
+</head>
+<body>
+
+<div id="banners"></div> <!-- 여러 이미지를 표시할 공간 -->
+
+<script>
+    // /banner 엔드포인트로부터 데이터를 가져오는 함수
+    function fetchBanners() {
+        fetch('http://localhost:8080/banner')
+            .then(response => response.json()) // 응답을 JSON으로 변환
+            .then(dataArray => {
+                const bannersDiv = document.getElementById('banners');
+                // 배열의 각 항목에 대해 반복
+                dataArray.forEach(data => {
+                    // 이미지를 생성하고 속성 설정
+                    const img = document.createElement('img');
+                    img.src = data.image; // 이미지 소스는 응답에서 받은 image 속성을 사용
+                    img.alt = 'Banner Image'; // 대체 텍스트 설정
+                    img.id = data.id; // 이미지에 id 속성 설정, 필요에 따라 사용
+
+                    // 생성한 이미지를 div에 추가
+                    bannersDiv.appendChild(img);
+                });
+            })
+            .catch(error => console.error('Error fetching banners:', error));
+    }
+
+    // 페이지가 로드될 때 함수 실행
+    window.onload = function() {
+        fetchBanners();
+    }
+</script>
+
+</body>
+</html>
